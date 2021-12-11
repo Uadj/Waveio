@@ -10,7 +10,7 @@ public class Movement2D : MonoBehaviour
     private float xDelta = 2;
     private float xStartPosition;
     [SerializeField]
-    private float yMovespeed = 0.5f;
+    private float yMovespeed = 0.02f;
     private Rigidbody2D rigid2d;
     // Start is called before the first frame update
     private void Awake()
