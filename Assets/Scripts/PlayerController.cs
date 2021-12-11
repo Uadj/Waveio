@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Movement2D movement;
+    [SerializeField]
+    private StageContoller stageController;
     // Start is called before the first frame update
     void Start()
     {
@@ -12,12 +14,38 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    
+    void FixedUpdate()
     {
+        if (stageController.IsGameOver)
+        {
+            return;
+        }
         movement.MoveToX();
+        StartCoroutine("move2");
+        
+    }
+    private IEnumerator move2()
+    {
         if (Input.GetMouseButton(0))
         {
             movement.MoveToY();
         }
+        yield return new WaitForSeconds(0.02f);
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Item"))
+        {
+            stageController.IncreaseScore(1);
+            Destroy(collision.gameObject);
+
+        }
+        else if (collision.tag.Equals("Obstacle"))
+        {
+            Destroy(GetComponent<Rigidbody2D>());
+            stageController.GameOver();
+        }
+    }
+
 }
